@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Block Mobile Number</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 50px;
+      }
+      input,
+      button {
+        padding: 10px;
+        margin: 10px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Block a Mobile Number</h2>
+    <input type="text" id="mobileNumber" placeholder="Enter Mobile Number" />
+    <button onclick="submitNumber()">Block Number</button>
+    <p id="responseMessage"></p>
+
+    <script>
+      function submitNumber() {
+        const number = document.getElementById("mobileNumber").value;
+        fetch("http://localhost:8080/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ mobile: number }),
+        })
+          .then((response) => response.json().catch(() => response.text())) // Handle non-JSON errors
+          .then((data) => {
+            document.getElementById("responseMessage").innerText =
+              data.message || data.error;
+          })
+          .catch((error) => {
+            document.getElementById("responseMessage").innerText =
+              "Error: " + error.message;
+          });
+      }
+    </script>
+  </body>
+</html>
